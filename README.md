@@ -1,6 +1,7 @@
 
 
 # 🌱 Eco-Swipe
+ "Turn waste into value with a swipe."
 
 **Eco-Swipe** is an AI-powered sustainable marketplace that transforms waste into value through a swipe-based experience. It connects users, recyclers, and buyers to promote a circular economy and reduce environmental impact.
 
@@ -85,35 +86,5 @@ Eco-Swipe introduces a **gamified, user-friendly platform** where:
 
 ---
 
-## 🏆 Hackathon Value
 
-* Unique **Tinder-like UX for sustainability**
-* Combines **AI + Circular Economy**
-* Real-world environmental impact
-* Scalable across cities and industries
-
----
-
-## 📌 Tagline
-
-> "Turn waste into value with a swipe."
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome!
-Feel free to fork this repo and submit a pull request.
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License.
-
----
-
-## 🙌 Acknowledgements
-
-Built with a vision to create a cleaner and smarter planet 🌍
 
