@@ -1,7 +1,7 @@
 
 
-# 🌱 Eco-Swipe
- "Turn waste into value with a swipe."
+#                                                                                             🌱 Eco-Swipe
+                                                                                    "Turn waste into value with a swipe."
 
 **Eco-Swipe** is an AI-powered sustainable marketplace that transforms waste into value through a swipe-based experience. It connects users, recyclers, and buyers to promote a circular economy and reduce environmental impact.
 
