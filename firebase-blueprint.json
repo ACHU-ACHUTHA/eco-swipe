@@ -1,0 +1,86 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "User profile information including role and settings.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "role": { "type": "string", "enum": ["buyer", "seller"] },
+        "trustScore": { "type": "number" },
+        "earnings": { "type": "number" },
+        "darkMode": { "type": "boolean" }
+      },
+      "required": ["uid", "name", "email", "role"]
+    },
+    "Listing": {
+      "title": "Waste Listing",
+      "description": "Industrial waste listing uploaded by sellers.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "sellerId": { "type": "string" },
+        "sellerName": { "type": "string" },
+        "materialType": { "type": "string" },
+        "weight": { "type": "number" },
+        "price": { "type": "number" },
+        "location": { "type": "string" },
+        "quality": { "type": "string" },
+        "suggestedIndustries": { "type": "array", "items": { "type": "string" } },
+        "imageUrl": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["sellerId", "materialType", "weight", "price", "location"]
+    },
+    "Request": {
+      "title": "Buyer Request",
+      "description": "Request from a buyer to a seller for a specific listing.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "listingId": { "type": "string" },
+        "buyerId": { "type": "string" },
+        "buyerName": { "type": "string" },
+        "sellerId": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "accepted", "rejected"] },
+        "wasteName": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["listingId", "buyerId", "sellerId", "status"]
+    },
+    "Notification": {
+      "title": "Notification",
+      "description": "User notification for updates.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "message": { "type": "string" },
+        "type": { "type": "string" },
+        "read": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "message", "read"]
+    }
+  },
+  "firestore": {
+    "/users/{uid}": {
+      "schema": "User",
+      "description": "User profiles."
+    },
+    "/listings/{listingId}": {
+      "schema": "Listing",
+      "description": "Marketplace listings."
+    },
+    "/requests/{requestId}": {
+      "schema": "Request",
+      "description": "Buyer-Seller requests."
+    },
+    "/notifications/{notificationId}": {
+      "schema": "Notification",
+      "description": "User notifications."
+    }
+  }
+}

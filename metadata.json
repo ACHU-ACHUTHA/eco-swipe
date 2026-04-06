@@ -1,0 +1,5 @@
+{
+  "name": "ECO-SWIPE",
+  "description": "AI-powered industrial waste marketplace with gamification. Connects sellers of industrial waste with buyers using AI classification and Tinder-style swipe matching.",
+  "requestFramePermissions": ["camera", "geolocation"]
+}

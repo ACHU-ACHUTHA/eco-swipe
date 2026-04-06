@@ -1,0 +1,86 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    //
+    // Collection: users
+    // Fields: uid, name, email, role, trustScore, earnings, darkMode
+    //
+    // Collection: listings
+    // Fields: sellerId, sellerName, materialType, weight, price, location, quality, suggestedIndustries, imageUrl, createdAt
+    //
+    // Collection: requests
+    // Fields: listingId, buyerId, buyerName, sellerId, status, wasteName, createdAt
+    //
+    // Collection: notifications
+    // Fields: userId, message, type, read, createdAt
+    //
+    // ===============================================================
+
+    // Helper Functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    function isValidUser(data) {
+      return data.keys().hasAll(['uid', 'name', 'email', 'role']) &&
+             data.uid is string &&
+             data.name is string && data.name.size() < 100 &&
+             data.email is string &&
+             data.role in ['buyer', 'seller'];
+    }
+
+    function isValidListing(data) {
+      return data.keys().hasAll(['sellerId', 'materialType', 'weight', 'price', 'location']) &&
+             data.sellerId == request.auth.uid &&
+             data.materialType is string && data.materialType.size() < 100 &&
+             data.weight is number && data.weight > 0 &&
+             data.price is number && data.price >= 0 &&
+             data.location is string && data.location.size() < 200;
+    }
+
+    function isValidRequest(data) {
+      return data.keys().hasAll(['listingId', 'buyerId', 'sellerId', 'status']) &&
+             data.buyerId == request.auth.uid &&
+             data.status == 'pending';
+    }
+
+    // Rules
+    
+    match /users/{uid} {
+      allow read: if isAuthenticated();
+      allow create: if isOwner(uid) && isValidUser(request.resource.data);
+      allow update: if isOwner(uid) && isValidUser(request.resource.data);
+    }
+    
+    match /listings/{listingId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && isValidListing(request.resource.data);
+      allow update: if isAuthenticated() && (resource.data.sellerId == request.auth.uid || request.auth.token.admin == true);
+      allow delete: if isAuthenticated() && resource.data.sellerId == request.auth.uid;
+    }
+    
+    match /requests/{requestId} {
+      allow read: if isAuthenticated() && (resource.data.buyerId == request.auth.uid || resource.data.sellerId == request.auth.uid);
+      allow create: if isAuthenticated() && isValidRequest(request.resource.data);
+      allow update: if isAuthenticated() && (resource.data.sellerId == request.auth.uid || resource.data.buyerId == request.auth.uid);
+    }
+    
+    match /notifications/{notificationId} {
+      allow read: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow create: if isAuthenticated(); // System or other users can create notifications
+      allow update: if isAuthenticated() && resource.data.userId == request.auth.uid;
+    }
+
+    match /test/connection {
+      allow read: if true;
+    }
+  }
+}
